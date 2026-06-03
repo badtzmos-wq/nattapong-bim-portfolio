@@ -1401,3 +1401,86 @@ header nav {
     gap: 0.85rem;
   }
 }
+
+/* Mobile project detail lockdown: keep image actions and gallery reachable on touch screens. */
+@media (max-width: 767px) {
+  .detail-overlay {
+    overflow: hidden;
+    padding: 0.75rem;
+  }
+
+  .detail-panel {
+    display: flex !important;
+    width: 100%;
+    max-height: calc(100dvh - 1.5rem);
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 1.45rem;
+  }
+
+  .detail-hero {
+    display: grid;
+    flex: 0 0 auto;
+    min-height: 0;
+    max-height: 45dvh;
+    align-items: start;
+    justify-items: stretch;
+    gap: 0.8rem;
+    padding: 0.9rem;
+  }
+
+  .detail-hero img,
+  .detail-preview-image {
+    display: block;
+    width: 100%;
+    max-height: calc(45dvh - 4.9rem);
+    object-fit: contain;
+  }
+
+  .detail-preview-image {
+    border-radius: 1rem;
+    padding: 0.65rem;
+    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.12);
+  }
+
+  .view-full-image {
+    position: static;
+    justify-self: end;
+    min-height: 44px;
+    margin: 0;
+    padding: 0.75rem 1.15rem;
+  }
+
+  .detail-close-icon {
+    right: 0.85rem;
+    top: 0.85rem;
+    z-index: 30;
+    background: rgba(255, 255, 255, 0.96);
+  }
+
+  .detail-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+    padding: 1.25rem;
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+    scroll-padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  }
+
+  .detail-content h2 {
+    font-size: clamp(2.8rem, 13vw, 4rem);
+  }
+
+  .detail-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .gallery-thumb {
+    min-height: 7.2rem;
+    border-radius: 1rem;
+    padding: 0.65rem;
+  }
+}
