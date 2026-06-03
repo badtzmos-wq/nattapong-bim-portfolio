@@ -26,7 +26,9 @@ export type Experience = {
   summary: string;
 };
 
-const media = (file: string) => `/portfolio/${file}`;
+export const publicPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+
+const media = (file: string) => publicPath(`/portfolio/${file}`);
 
 export const projects: Project[] = [
   {
@@ -309,8 +311,8 @@ export const contact = {
   location: "Bangkok, Thailand",
   email: "badtz.mos@gmail.com",
   phone: "0850331812",
-  cv: "/files/Nattapong-Loes-a-nan-CV-Portfolio.pdf",
-  profileImage: "/images/profile/nattapong-profile.jpg",
+  cv: publicPath("/files/Nattapong-Loes-a-nan-CV-Portfolio.pdf"),
+  profileImage: publicPath("/images/profile/nattapong-profile.jpg"),
 };
 
 export const marqueeText = "BIM Production · BIM Coordination · Revit Documentation · Navisworks Clash Detection · Model QA/QC · CDE & Document Control · QTO/BOQ · Power BI Reporting · Dynamo · Construction Coordination · Shop Drawing · As-Built Model";

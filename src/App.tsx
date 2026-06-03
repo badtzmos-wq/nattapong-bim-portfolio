@@ -1,7 +1,7 @@
 ﻿import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { contact, experiences, projects, skillGroups, type Project, type ProjectCategory } from "./data";
+import { contact, experiences, projects, publicPath, skillGroups, type Project, type ProjectCategory } from "./data";
 
 const filters: Array<"All" | ProjectCategory> = ["All", "BIM Production", "BIM Coordination & Management"];
 type PageName = "home" | "work" | "about" | "contact";
@@ -21,13 +21,13 @@ const serviceHighlights = [
 ];
 
 const coreTools = [
-  { name: "Revit", image: "/images/tools-real/revit.png" },
-  { name: "Navisworks", image: "/images/tools-real/navisworks.png" },
-  { name: "Power BI", image: "/images/tools-real/power-bi.webp" },
-  { name: "Excel", image: "/images/tools-real/excel.svg" },
-  { name: "Power Query", image: "/images/tools-real/power-query.png" },
-  { name: "Autodesk Forma", image: "/images/tools-real/autodesk-forma.png" },
-  { name: "pyRevit", image: "/images/tools-real/pyrevit.webp" },
+  { name: "Revit", image: publicPath("/images/tools-real/revit.png") },
+  { name: "Navisworks", image: publicPath("/images/tools-real/navisworks.png") },
+  { name: "Power BI", image: publicPath("/images/tools-real/power-bi.webp") },
+  { name: "Excel", image: publicPath("/images/tools-real/excel.svg") },
+  { name: "Power Query", image: publicPath("/images/tools-real/power-query.png") },
+  { name: "Autodesk Forma", image: publicPath("/images/tools-real/autodesk-forma.png") },
+  { name: "pyRevit", image: publicPath("/images/tools-real/pyrevit.webp") },
 ];
 
 const proficiencyLevels = [
@@ -332,10 +332,10 @@ function Hero({ onNavigate }: { onNavigate: (page: PageName) => void }) {
 
         <figure className="hero-evidence" aria-label="BIM model evidence visuals">
           <div className="hero-model hero-model-primary">
-            <img src="/images/home/3d-per-05-display.png" alt="3D BIM building model perspective" />
+            <img src={publicPath("/images/home/3d-per-05-display.png")} alt="3D BIM building model perspective" />
           </div>
           <div className="hero-model hero-model-secondary">
-            <img src="/images/home/3d-per-01-display.png" alt="3D BIM coordination model perspective" />
+            <img src={publicPath("/images/home/3d-per-01-display.png")} alt="3D BIM coordination model perspective" />
           </div>
         </figure>
       </div>
