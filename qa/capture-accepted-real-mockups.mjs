@@ -69,6 +69,9 @@ for (const pageName of ["home", "work", "about", "contact"]) {
 files.push(await capture("work", { fileName: "accepted-real-work-cards.png", scrollTo: "window.scrollTo(0, 1120)" }));
 files.push(await capture("work", { fileName: "accepted-real-work-footer.png", scrollTo: "window.scrollTo(0, document.documentElement.scrollHeight)" }));
 files.push(await capture("about", { fileName: "accepted-real-about-skills.png", scrollTo: "document.querySelector('.proficiency-list')?.scrollIntoView({ block: 'center' })" }));
+for (const pageName of ["home", "work", "about"]) {
+  files.push(await capture(pageName, { width: 390, height: 1200, fileName: `accepted-real-${pageName}-mobile.png` }));
+}
 files.push(await capture("contact", { width: 390, height: 1200, fileName: "accepted-real-contact-mobile.png" }));
 
 console.log(JSON.stringify({ files }, null, 2));
