@@ -239,8 +239,8 @@ export const projects: Project[] = [
     description: "Progress tracking workflow for BIM model status, discipline progress, weekly reports, delay visibility, and action item communication.",
     concept: "Track BIM model progress by overall discipline and individual discipline. Provide progress visibility through dashboards, weekly reports, charts, and discipline-based status summaries.",
     keyOutputs: ["Overall discipline dashboard", "Discipline-specific progress dashboard", "Weekly report", "Progress chart", "Model status tracking", "Delay and action item reporting"],
-    image: media("image71.png"),
-    gallery: [media("image71.png"), media("image66.png"), media("image70.png"), media("image65.png"), media("image69.png"), media("image68.png"), media("image67.png"), media("image72.png")],
+    image: media("redacted/image71-redacted.png"),
+    gallery: [media("redacted/image71-redacted.png"), media("image66.png"), media("image70.png"), media("redacted/image65-redacted.png"), media("image69.png"), media("redacted/image68-redacted.png"), media("image67.png"), media("redacted/image72-redacted.png")],
     featured: true,
   },
   {
