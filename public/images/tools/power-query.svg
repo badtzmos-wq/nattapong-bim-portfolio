@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Power Query">
+  <rect width="64" height="64" rx="12" fill="#0F766E"/>
+  <path d="M14 18h18c8 0 13 5 13 12s-5 12-13 12h-7v8H14V18Zm11 9v7h7c2 0 4-1 4-4s-2-3-4-3h-7Z" fill="#fff"/>
+  <path d="M43 42c2-2 3-5 3-9 0-10-7-17-18-17h-2v-4h3c13 0 22 8 22 21 0 5-1 9-4 12l5 5h-8l-1-8Z" fill="#BFF4EF"/>
+</svg>

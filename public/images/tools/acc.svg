@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Autodesk Construction Cloud">
+  <rect width="64" height="64" rx="12" fill="#0B5CAB"/>
+  <path d="M15 47 29 14h8l14 33H40l-2-6H27l-2 6H15Zm15-14h6l-3-9-3 9Z" fill="#fff"/>
+  <path d="M18 51h28v-5H18v5Z" fill="#87C8FF"/>
+</svg>

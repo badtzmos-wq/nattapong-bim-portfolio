@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Autodesk Forma">
+  <rect width="64" height="64" rx="12" fill="#151515"/>
+  <path d="M15 48V16h33v9H26v6h18v9H26v8H15Z" fill="#fff"/>
+  <path d="M39 25h9v23h-9V25Z" fill="#42D1A7"/>
+</svg>

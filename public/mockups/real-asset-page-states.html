@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nattapong Portfolio Mockup - Real Asset Page States</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f7f7f3;
+        --paper: #ffffff;
+        --ink: #111111;
+        --muted: #666666;
+        --faint: #e5e5e5;
+        --accent: #1f4e79;
+        --dark: #111111;
+        --pad: clamp(28px, 4vw, 56px);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Inter, Prompt, system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      a,
+      button {
+        font: inherit;
+      }
+
+      .state {
+        display: none;
+        min-height: 100vh;
+      }
+
+      .state.active {
+        display: block;
+      }
+
+      .mock-shell {
+        width: 100%;
+        min-height: 100vh;
+        padding: 24px;
+      }
+
+      .mock-pair {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 390px;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .frame {
+        overflow: hidden;
+        border: 1px solid #d9d9d4;
+        background: var(--bg);
+      }
+
+      .desktop {
+        min-height: 1010px;
+      }
+
+      .mobile {
+        width: 390px;
+        min-height: 850px;
+      }
+
+      .nav {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+        padding: 0 var(--pad);
+        border-bottom: 1px solid var(--faint);
+        background: rgba(247, 247, 243, 0.95);
+      }
+
+      .nav.home-dark {
+        position: absolute;
+        inset: 0 0 auto 0;
+        color: #fff;
+        border-bottom-color: rgba(255, 255, 255, 0.18);
+        background: transparent;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .mark {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border-radius: 999px;
+        background: var(--ink);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .home-dark .mark {
+        background: #fff;
+        color: #111;
+      }
+
+      .brand strong {
+        display: block;
+        font-size: 13px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .brand span {
+        display: block;
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .home-dark .brand span {
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      .links {
+        display: flex;
+        align-items: center;
+        gap: 34px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .home-dark .links {
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .links .active {
+        color: var(--accent);
+      }
+
+      .home-dark .links .active {
+        color: #fff;
+      }
+
+      .btn {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--faint);
+        border-radius: 999px;
+        padding: 0 22px;
+        background: #fff;
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .btn.primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .home-dark .btn {
+        border-color: rgba(255, 255, 255, 0.45);
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+
+      .hamb {
+        display: none;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--faint);
+        border-radius: 999px;
+        background: #fff;
+        color: #111;
+        font-size: 22px;
+        line-height: 1;
+      }
+
+      .eyebrow {
+        margin: 0 0 18px;
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .page-title {
+        margin: 0;
+        max-width: 980px;
+        font-size: clamp(56px, 6.2vw, 88px);
+        font-weight: 800;
+        letter-spacing: -0.045em;
+        line-height: 0.93;
+      }
+
+      .page-sub {
+        margin: 22px 0 0;
+        max-width: 620px;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      .canvas {
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .canvas img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 710px;
+        overflow: hidden;
+        background: #111;
+      }
+
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+      }
+
+      .hero-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, rgba(9, 13, 18, 0.78) 0%, rgba(9, 13, 18, 0.52) 42%, rgba(9, 13, 18, 0.18) 100%),
+          linear-gradient(0deg, rgba(9, 13, 18, 0.72) 0%, rgba(9, 13, 18, 0.08) 58%);
+      }
+
+      .hero-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.88;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        min-height: 710px;
+        align-content: end;
+        padding: 130px var(--pad) 78px;
+        color: #fff;
+      }
+
+      .hero-content .eyebrow,
+      .hero-content .page-sub {
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .hero-name {
+        margin: 0;
+        max-width: 980px;
+        font-size: clamp(64px, 8vw, 124px);
+        font-weight: 800;
+        letter-spacing: -0.055em;
+        line-height: 0.88;
+      }
+
+      .role {
+        margin: 24px 0 0;
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .ticker {
+        display: flex;
+        gap: 40px;
+        overflow: hidden;
+        border-block: 1px solid #222;
+        background: #111;
+        padding: 14px var(--pad);
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .home-preview {
+        padding: 86px var(--pad);
+      }
+
+      .featured-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 3px;
+        margin-top: 42px;
+      }
+
+      .feature-card {
+        border: 1px solid var(--faint);
+        background: #fff;
+      }
+
+      .feature-card.large .canvas {
+        height: 390px;
+      }
+
+      .feature-card:not(.large) .canvas {
+        height: 188px;
+      }
+
+      .feature-card .meta {
+        padding: 22px;
+        border-top: 1px solid var(--faint);
+      }
+
+      .meta-line {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .card-title {
+        margin: 14px 0 0;
+        font-size: 24px;
+        font-weight: 800;
+        line-height: 1.15;
+      }
+
+      .home-about-strip {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 56px;
+        padding: 82px var(--pad);
+        background: #111;
+        color: #fff;
+      }
+
+      .home-about-strip p {
+        color: rgba(255, 255, 255, 0.62);
+        line-height: 1.8;
+      }
+
+      .page-header {
+        padding: 86px var(--pad) 54px;
+      }
+
+      .work-layout {
+        padding: 0 var(--pad) 88px;
+      }
+
+      .case-row {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 0;
+        border-top: 1px solid var(--faint);
+      }
+
+      .case-row.reverse {
+        grid-template-columns: 0.9fr 1.1fr;
+      }
+
+      .case-row.reverse .case-copy {
+        order: -1;
+      }
+
+      .case-row .canvas {
+        min-height: 360px;
+        border-inline: 1px solid var(--faint);
+      }
+
+      .case-copy {
+        display: grid;
+        align-content: center;
+        min-height: 360px;
+        padding: 48px;
+        background: var(--bg);
+      }
+
+      .case-copy h2 {
+        margin: 16px 0;
+        font-size: 42px;
+        line-height: 1.04;
+        letter-spacing: -0.03em;
+      }
+
+      .case-copy p {
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 20px;
+      }
+
+      .chip {
+        border: 1px solid var(--faint);
+        border-radius: 999px;
+        background: #fff;
+        padding: 6px 11px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .archive {
+        margin-top: 62px;
+        border-top: 1px solid var(--faint);
+        padding-top: 34px;
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin: 24px 0 30px;
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .search {
+        min-width: min(420px, 100%);
+        border: 1px solid var(--faint);
+        border-radius: 999px;
+        background: #fff;
+        padding: 13px 18px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .archive-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .project-card {
+        border: 1px solid var(--faint);
+        background: #fff;
+      }
+
+      .project-card .canvas {
+        height: 230px;
+        padding: 14px;
+        border-bottom: 1px solid var(--faint);
+      }
+
+      .project-card .body {
+        padding: 24px;
+      }
+
+      .project-card h3 {
+        margin: 18px 0 14px;
+        font-size: 27px;
+        line-height: 1.12;
+      }
+
+      .project-card p {
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .about-page {
+        padding-bottom: 88px;
+      }
+
+      .about-hero {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 74px;
+        padding: 86px var(--pad) 66px;
+        border-bottom: 1px solid var(--faint);
+      }
+
+      .portrait {
+        width: 140px;
+        height: 140px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #fff;
+      }
+
+      .portrait img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+      }
+
+      .aside {
+        display: grid;
+        gap: 18px;
+      }
+
+      .aside-card {
+        border: 1px solid var(--faint);
+        background: #fff;
+        padding: 22px;
+      }
+
+      .aside-card h3 {
+        margin: 0 0 12px;
+        color: var(--accent);
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .aside-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .cv-section {
+        padding: 58px var(--pad);
+        border-bottom: 1px solid var(--faint);
+      }
+
+      .cv-head {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 20px;
+        align-items: baseline;
+        margin-bottom: 34px;
+      }
+
+      .cv-head span {
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+      }
+
+      .cv-head h2 {
+        margin: 0;
+        font-size: 42px;
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+
+      .timeline-row {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 42px;
+        padding: 24px 0;
+        border-top: 1px solid var(--faint);
+      }
+
+      .timeline-row h3 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .timeline-row p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .contact-page {
+        min-height: 100%;
+      }
+
+      .contact-hero {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 76px;
+        min-height: 730px;
+        padding: 100px var(--pad) 80px;
+        align-items: center;
+      }
+
+      .contact-title {
+        margin: 0;
+        font-size: clamp(72px, 9vw, 132px);
+        font-weight: 800;
+        line-height: 0.88;
+        letter-spacing: -0.06em;
+      }
+
+      .contact-intent {
+        margin-top: 28px;
+        max-width: 580px;
+        color: var(--muted);
+        font-size: 20px;
+        line-height: 1.7;
+      }
+
+      .contact-panel {
+        border-top: 1px solid var(--ink);
+        border-bottom: 1px solid var(--faint);
+        padding: 20px 0 28px;
+      }
+
+      .contact-row {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 20px;
+        padding: 22px 0;
+        border-bottom: 1px solid var(--faint);
+      }
+
+      .contact-row:last-child {
+        border-bottom: 0;
+      }
+
+      .contact-row span {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .contact-row strong {
+        font-size: 22px;
+        line-height: 1.25;
+      }
+
+      .contact-row.email strong {
+        color: var(--accent);
+        font-size: 28px;
+      }
+
+      .contact-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 28px var(--pad);
+        border-top: 1px solid var(--faint);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .mobile .nav {
+        height: 74px;
+        padding: 0 20px;
+      }
+
+      .mobile .links {
+        display: none;
+      }
+
+      .mobile .hamb {
+        display: block;
+      }
+
+      .mobile .brand strong {
+        font-size: 12px;
+      }
+
+      .mobile .brand span {
+        font-size: 11px;
+      }
+
+      .mobile .hero {
+        min-height: 760px;
+      }
+
+      .mobile .hero-bg img {
+        object-position: center;
+      }
+
+      .mobile .hero-content {
+        min-height: 760px;
+        padding: 122px 20px 42px;
+      }
+
+      .mobile .hero-name {
+        font-size: 58px;
+        line-height: 0.92;
+      }
+
+      .mobile .role {
+        font-size: 15px;
+      }
+
+      .mobile .page-sub {
+        font-size: 15px;
+      }
+
+      .mobile .btn {
+        width: 100%;
+      }
+
+      .mobile .ticker {
+        padding: 12px 20px;
+      }
+
+      .mobile .home-preview,
+      .mobile .page-header,
+      .mobile .work-layout,
+      .mobile .cv-section {
+        padding-inline: 20px;
+      }
+
+      .mobile .home-preview,
+      .mobile .page-header {
+        padding-block: 58px 36px;
+      }
+
+      .mobile .page-title {
+        font-size: 44px;
+        line-height: 0.98;
+      }
+
+      .mobile .featured-grid,
+      .mobile .case-row,
+      .mobile .case-row.reverse,
+      .mobile .archive-grid,
+      .mobile .home-about-strip,
+      .mobile .about-hero,
+      .mobile .contact-hero,
+      .mobile .timeline-row,
+      .mobile .cv-head {
+        grid-template-columns: 1fr;
+      }
+
+      .mobile .feature-card.large .canvas,
+      .mobile .feature-card:not(.large) .canvas,
+      .mobile .case-row .canvas,
+      .mobile .project-card .canvas {
+        height: 220px;
+      }
+
+      .mobile .case-row.reverse .case-copy {
+        order: 0;
+      }
+
+      .mobile .case-copy {
+        min-height: 0;
+        padding: 28px 0 38px;
+      }
+
+      .mobile .case-copy h2 {
+        font-size: 32px;
+      }
+
+      .mobile .controls {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .mobile .search {
+        min-width: 0;
+      }
+
+      .mobile .about-hero {
+        gap: 34px;
+        padding: 58px 20px 42px;
+      }
+
+      .mobile .portrait {
+        width: 112px;
+        height: 112px;
+      }
+
+      .mobile .cv-head {
+        gap: 10px;
+      }
+
+      .mobile .cv-head h2 {
+        font-size: 34px;
+      }
+
+      .mobile .timeline-row {
+        gap: 10px;
+      }
+
+      .mobile .contact-hero {
+        min-height: 700px;
+        gap: 42px;
+        padding: 68px 20px 54px;
+      }
+
+      .mobile .contact-title {
+        font-size: 64px;
+      }
+
+      .mobile .contact-intent {
+        font-size: 16px;
+      }
+
+      .mobile .contact-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .mobile .contact-row strong,
+      .mobile .contact-row.email strong {
+        font-size: 20px;
+      }
+
+      .mobile .contact-actions {
+        flex-direction: column;
+      }
+
+      .mobile .footer {
+        flex-direction: column;
+        padding-inline: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="mock-shell">
+      <section class="state" data-page="home">
+        <div class="mock-pair">
+          <div class="frame desktop">
+            <nav class="nav home-dark">
+              <div class="brand"><span class="mark">NL</span><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div>
+              <div class="links"><span class="active">Home</span><span>Work</span><span>About</span><span>Contact</span><span class="btn">Get in Touch</span></div>
+            </nav>
+            <section class="hero">
+              <div class="hero-bg"><img src="/portfolio/image71.png" alt="" /></div>
+              <div class="hero-content">
+                <p class="eyebrow">Bangkok, Thailand / BIM Professional</p>
+                <h1 class="hero-name">Nattapong<br />Loes-a-nan</h1>
+                <p class="role">Office Engineer | BIM Specialist | BIM Coordinator</p>
+                <p class="page-sub">BIM production, coordination, CDE setup, model QA/QC, clash detection, shop drawings, and model-based QTO/BOQ.</p>
+                <div class="cta-row"><span class="btn primary">View Work</span><span class="btn">Download CV</span></div>
+              </div>
+            </section>
+            <div class="ticker"><span>BIM Production</span><span>BIM Coordination</span><span>Revit Documentation</span><span>QTO/BOQ</span><span>Power BI Reporting</span></div>
+            <section class="home-preview">
+              <p class="eyebrow">Selected Work</p>
+              <h2 class="page-title">Recent BIM Projects</h2>
+              <div class="featured-grid">
+                <article class="feature-card large"><div class="canvas"><img src="/portfolio/image74.png" alt="" /></div><div class="meta"><div class="meta-line"><span>01</span><span>2023-Present</span></div><h3 class="card-title">Clash and Issue Reports</h3></div></article>
+                <div>
+                  <article class="feature-card"><div class="canvas"><img src="/portfolio/image47.jpg" alt="" /></div><div class="meta"><div class="meta-line"><span>02</span><span>2017-2023</span></div><h3 class="card-title">BOQ Support</h3></div></article>
+                  <article class="feature-card"><div class="canvas"><img src="/portfolio/image2.png" alt="" /></div><div class="meta"><div class="meta-line"><span>03</span><span>2017-2023</span></div><h3 class="card-title">Revit Template</h3></div></article>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="frame mobile">
+            <nav class="nav"><div class="brand"><span class="mark">NL</span><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><button class="hamb">☰</button></nav>
+            <section class="hero">
+              <div class="hero-bg"><img src="/portfolio/image71.png" alt="" /></div>
+              <div class="hero-content">
+                <p class="eyebrow">Bangkok / BIM Professional</p>
+                <h1 class="hero-name">Nattapong<br />Loes-a-nan</h1>
+                <p class="role">Office Engineer | BIM Specialist | BIM Coordinator</p>
+                <p class="page-sub">BIM production, coordination, QA/QC, clash detection, shop drawings, and QTO/BOQ.</p>
+                <div class="cta-row"><span class="btn primary">View Work</span><span class="btn">Download CV</span></div>
+              </div>
+            </section>
+            <div class="ticker"><span>BIM Production</span><span>BIM Coordination</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="state" data-page="work">
+        <div class="mock-pair">
+          <div class="frame desktop">
+            <nav class="nav"><div class="brand"><span class="mark">NL</span><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><div class="links"><span>Home</span><span class="active">Work</span><span>About</span><span>Contact</span><span class="btn primary">Get in Touch</span></div></nav>
+            <header class="page-header"><p class="eyebrow">Work</p><h1 class="page-title">Selected BIM Work</h1><p class="page-sub">Project evidence across BIM coordination, production setup, model-based quantity workflows, and reporting.</p></header>
+            <section class="work-layout">
+              <article class="case-row"><div class="canvas"><img src="/portfolio/image71.png" alt="" /></div><div class="case-copy"><div class="meta-line"><span>01</span><span>2023-Present</span></div><h2>Tracking Model Progress</h2><p>Progress tracking workflow for BIM model status, discipline progress, weekly reports, delay visibility, and action item communication.</p><div class="chips"><span class="chip">Power BI</span><span class="chip">Excel</span><span class="chip">Revit</span><span class="chip">ACC</span></div></div></article>
+              <article class="case-row reverse"><div class="canvas"><img src="/portfolio/image74.png" alt="" /></div><div class="case-copy"><div class="meta-line"><span>02</span><span>2023-Present</span></div><h2>Clash and Issue Reports</h2><p>Clash detection and issue reporting workflow to support design-to-construction transition and coordination review.</p><div class="chips"><span class="chip">Navisworks</span><span class="chip">Revit</span><span class="chip">BIM360 Docs</span></div></div></article>
+              <div class="archive"><p class="eyebrow">Archive</p><h2 style="font-size:42px;margin:0">All Projects</h2><div class="controls"><div class="filters"><span class="chip" style="background:#1f4e79;color:#fff">All</span><span class="chip">BIM Production</span><span class="chip">Coordination</span></div><div class="search">Search by project, tool, output</div></div><div class="archive-grid">
+                <article class="project-card"><div class="canvas"><img src="/portfolio/image2.png" alt="" /></div><div class="body"><div class="meta-line"><span>01</span><span>2017-2023</span></div><h3>Revit Template</h3><p>Standardized Revit template setup for BIM production.</p></div></article>
+                <article class="project-card"><div class="canvas"><img src="/portfolio/image47.jpg" alt="" /></div><div class="body"><div class="meta-line"><span>11</span><span>2017-2023</span></div><h3>Schedule & Quantities: BOQ Support</h3><p>Model-based quantity takeoff workflow for BOQ backup.</p></div></article>
+              </div></div>
+            </section>
+          </div>
+          <div class="frame mobile">
+            <nav class="nav"><div class="brand"><span class="mark">NL</span><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><button class="hamb">☰</button></nav>
+            <header class="page-header"><p class="eyebrow">Work</p><h1 class="page-title">Selected BIM Work</h1><p class="page-sub">Project evidence across coordination, production, QTO, and reporting.</p></header>
+            <section class="work-layout"><article class="case-row"><div class="canvas"><img src="/portfolio/image71.png" alt="" /></div><div class="case-copy"><div class="meta-line"><span>01</span><span>2023-Present</span></div><h2>Tracking Model Progress</h2><p>Dashboard workflow for model progress and reporting.</p></div></article><div class="archive"><div class="controls"><div class="filters"><span class="chip" style="background:#1f4e79;color:#fff">All</span><span class="chip">BIM Production</span><span class="chip">Coordination</span></div><div class="search">Search projects</div></div><div class="archive-grid"><article class="project-card"><div class="canvas"><img src="/portfolio/image47.jpg" alt="" /></div><div class="body"><div class="meta-line"><span>11</span><span>2017-2023</span></div><h3>BOQ Support</h3><p>Model-based quantity takeoff workflow.</p></div></article></div></div></section>
+          </div>
+        </div>
+      </section>
+
+      <section class="state" data-page="about">
+        <div class="mock-pair">
+          <div class="frame desktop">
+            <nav class="nav"><div class="brand"><span class="mark">NL</span><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><div class="links"><span>Home</span><span>Work</span><span class="active">About</span><span>Contact</span><span class="btn primary">Get in Touch</span></div></nav>
+            <main class="about-page"><section class="about-hero"><div><p class="eyebrow">About</p><h1 class="page-title">Nattapong Loes-a-nan</h1><p class="role" style="color:#1f4e79">Office Engineer | BIM Specialist | BIM Coordinator</p><p class="page-sub">BIM professional with 7+ years across design and construction phases, focused on production, coordination, CDE setup, QA/QC, clash detection, shop drawings, and model-based QTO/BOQ.</p></div><aside class="aside"><div class="portrait"><img src="/images/profile/nattapong-profile.jpg" alt="" /></div><div class="aside-card"><h3>Location</h3><p>Bangkok, Thailand</p></div><div class="aside-card"><h3>Core Tools</h3><p>Revit / Navisworks / Power BI / ACC</p></div></aside></section><section class="cv-section"><div class="cv-head"><span>01</span><h2>Experience</h2></div><div class="timeline-row"><div><strong>Nov 2023 - Present</strong></div><div><h3>Freelance / BIM Coordinator</h3><p>BEP, CDE, QA/QC, clash checking, weekly BIM reports, and issue reporting.</p></div></div><div class="timeline-row"><div><strong>Mar 2023 - Oct 2023</strong></div><div><h3>Thai Kajima / BIM Engineer & Modeler</h3><p>Coordinated 3D BIM models, shop drawings, QTO, procurement support, and As-Built planning.</p></div></div></section></main>
+          </div>
+          <div class="frame mobile">
+            <nav class="nav"><div class="brand"><span class="mark">NL</span><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><button class="hamb">☰</button></nav>
+            <main class="about-page"><section class="about-hero"><div><p class="eyebrow">About</p><h1 class="page-title">Nattapong Loes-a-nan</h1><p class="page-sub">BIM professional with 7+ years across design and construction phases.</p></div><aside class="aside"><div class="portrait"><img src="/images/profile/nattapong-profile.jpg" alt="" /></div><div class="aside-card"><h3>Core Tools</h3><p>Revit / Navisworks / Power BI</p></div></aside></section><section class="cv-section"><div class="cv-head"><span>01</span><h2>Experience</h2></div><div class="timeline-row"><div><strong>Nov 2023 - Present</strong></div><div><h3>BIM Coordinator</h3><p>BEP, CDE, QA/QC, reports, clash checking.</p></div></div></section></main>
+          </div>
+        </div>
+      </section>
+
+      <section class="state" data-page="contact">
+        <div class="mock-pair">
+          <div class="frame desktop">
+            <nav class="nav"><div class="brand"><span class="mark">NL</span><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><div class="links"><span>Home</span><span>Work</span><span>About</span><span class="active">Contact</span><span class="btn primary">Get in Touch</span></div></nav>
+            <main class="contact-page"><section class="contact-hero"><div><p class="eyebrow">Contact</p><h1 class="contact-title">Let's<br />connect.</h1><p class="contact-intent">For BIM coordination, BIM production, model QA/QC, quantity takeoff, or portfolio discussion.</p></div><aside><div class="contact-panel"><div class="contact-row email"><span>Email</span><strong>badtz.mos@gmail.com</strong></div><div class="contact-row"><span>Phone</span><strong>0850331812</strong></div><div class="contact-row"><span>Based</span><strong>Bangkok, Thailand</strong></div></div><div class="contact-actions"><span class="btn primary">Email Me</span><span class="btn">Download CV</span><span class="btn">View Work</span></div></aside></section><footer class="footer"><span>© 2026 Nattapong Loes-a-nan</span><span>BIM Portfolio / Bangkok</span></footer></main>
+          </div>
+          <div class="frame mobile">
+            <nav class="nav"><div class="brand"><span class="mark">NL</span><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><button class="hamb">☰</button></nav>
+            <main class="contact-page"><section class="contact-hero"><div><p class="eyebrow">Contact</p><h1 class="contact-title">Let's<br />connect.</h1><p class="contact-intent">For BIM coordination, production, QA/QC, QTO, or portfolio discussion.</p></div><aside><div class="contact-panel"><div class="contact-row email"><span>Email</span><strong>badtz.mos@gmail.com</strong></div><div class="contact-row"><span>Phone</span><strong>0850331812</strong></div><div class="contact-row"><span>Based</span><strong>Bangkok, Thailand</strong></div></div><div class="contact-actions"><span class="btn primary">Email Me</span><span class="btn">Download CV</span><span class="btn">View Work</span></div></aside></section><footer class="footer"><span>© 2026 Nattapong Loes-a-nan</span></footer></main>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script>
+      const params = new URLSearchParams(location.search);
+      const page = params.get("page") || "home";
+      document.querySelector(`[data-page="${page}"]`)?.classList.add("active");
+    </script>
+  </body>
+</html>

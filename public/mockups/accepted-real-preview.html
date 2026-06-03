@@ -1,0 +1,1394 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accepted Real Asset Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f7f7f3;
+        --paper: #ffffff;
+        --ink: #0f0f10;
+        --muted: #5f646c;
+        --line: #d9d9d4;
+        --soft: #f2f2ee;
+        --accent: #0f4d83;
+        --accent-dark: #073e70;
+        --radius: 10px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #ecece8;
+        color: var(--ink);
+        font-family: Inter, Prompt, system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .state {
+        display: none;
+        min-height: 100vh;
+        padding: 24px;
+      }
+
+      .state.active {
+        display: block;
+      }
+
+      .mock-pair {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 390px;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .mock-label {
+        margin: 0 0 8px;
+        color: #444;
+        font-size: 16px;
+      }
+
+      .frame {
+        overflow: hidden;
+        border: 1px solid #cfcfca;
+        background: var(--bg);
+      }
+
+      .desktop {
+        min-height: 1040px;
+      }
+
+      .mobile {
+        width: 390px;
+        min-height: 980px;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 76px;
+        padding: 0 40px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.74);
+      }
+
+      .mobile .nav {
+        height: 74px;
+        padding: 0 20px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .mark {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border-radius: 50%;
+        background: #0f0f10;
+        color: white;
+        font-weight: 900;
+      }
+
+      .mobile .mark {
+        width: 38px;
+        height: 38px;
+        font-size: 13px;
+      }
+
+      .brand strong {
+        display: block;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .brand span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .mobile .brand strong {
+        font-size: 12px;
+      }
+
+      .mobile .brand span {
+        font-size: 11px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+      }
+
+      .nav-links a {
+        display: flex;
+        align-items: center;
+        border-bottom: 4px solid transparent;
+        color: #333;
+        font-size: 15px;
+        font-weight: 700;
+        min-height: 76px;
+        text-decoration: none;
+      }
+
+      .nav-links a.active {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      .btn {
+        display: inline-flex;
+        min-height: 48px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: 1px solid var(--accent);
+        border-radius: 8px;
+        padding: 0 28px;
+        color: var(--accent);
+        font-weight: 800;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .btn.primary {
+        background: linear-gradient(180deg, #0f568f, #0b4577);
+        color: white;
+      }
+
+      .nav-links .nav-cta {
+        min-height: 42px;
+        border-bottom: 1px solid #0b4577;
+        border-radius: 8px;
+        padding: 0 26px;
+        box-shadow: none;
+      }
+
+      .hamburger {
+        display: grid;
+        gap: 5px;
+      }
+
+      .hamburger span {
+        width: 22px;
+        height: 2px;
+        background: #111;
+      }
+
+      .eyebrow {
+        margin: 0 0 18px;
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .desktop-pad {
+        padding: 52px 54px 42px;
+      }
+
+      .paper-canvas {
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: white;
+      }
+
+      .paper-canvas img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .home-hero {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 28px;
+        align-items: center;
+        min-height: 760px;
+      }
+
+      .home-copy {
+        grid-column: 1 / span 5;
+      }
+
+      .home-title {
+        margin: 0;
+        max-width: 610px;
+        font-size: clamp(72px, 5.35vw, 92px);
+        font-weight: 900;
+        letter-spacing: -0.055em;
+        line-height: 0.9;
+      }
+
+      .home-title span {
+        white-space: nowrap;
+      }
+
+      .role {
+        margin: 22px 0 0;
+        color: var(--accent);
+        font-size: 23px;
+        font-weight: 800;
+      }
+
+      .skill-line {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 16px;
+        margin: 24px 0;
+        color: #3f444b;
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .summary {
+        max-width: 560px;
+        color: #505862;
+        font-size: 16px;
+        line-height: 1.7;
+      }
+
+      .actions {
+        display: flex;
+        gap: 28px;
+        margin-top: 34px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        margin-top: 42px;
+        max-width: 560px;
+        border-top: 1px solid var(--line);
+      }
+
+      .stat {
+        min-height: 96px;
+        padding: 20px 24px;
+        border-right: 1px solid var(--line);
+      }
+
+      .stat:last-child {
+        border-right: 0;
+      }
+
+      .stat strong {
+        display: block;
+        color: var(--accent);
+        font-size: 28px;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 4px;
+        font-size: 13px;
+        line-height: 1.25;
+      }
+
+      .evidence-board {
+        grid-column: 6 / span 7;
+        display: grid;
+        grid-template-columns: 1.06fr 0.94fr;
+        align-items: end;
+        align-self: stretch;
+        gap: 26px;
+        position: relative;
+        min-height: 700px;
+        margin: 0;
+        padding: 92px 6px 70px;
+      }
+
+      .model-cutout {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+      }
+
+      .model-cutout.primary {
+        transform: scale(1.1);
+        transform-origin: center bottom;
+      }
+
+      .model-cutout.secondary {
+        transform: scale(1.01);
+        transform-origin: center bottom;
+      }
+
+      .evidence-board img {
+        width: auto;
+        max-width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center bottom;
+      }
+
+      .evidence-board::after {
+        content: "";
+        position: absolute;
+        right: 2%;
+        bottom: 62px;
+        width: 94%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(15, 78, 121, 0.22), transparent);
+      }
+
+      .service-strip {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        background: #111;
+        color: white;
+      }
+
+      .service {
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 16px;
+        align-items: center;
+        min-height: 96px;
+        padding: 22px 32px;
+        border-right: 1px solid #3b3b3b;
+      }
+
+      .service b {
+        display: block;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .service span {
+        color: #cfcfcf;
+        font-size: 12px;
+      }
+
+      .icon-box {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        color: #59a8ef;
+        font-size: 25px;
+      }
+
+      .selected-strip {
+        padding: 48px 58px 26px;
+      }
+
+      .selected-strip h2,
+      .page-title {
+        margin: 0;
+        font-size: clamp(46px, 4vw, 64px);
+        font-weight: 900;
+        letter-spacing: -0.05em;
+        line-height: 0.95;
+      }
+
+      .work-page {
+        padding: 48px 42px 28px;
+      }
+
+      .work-lead {
+        max-width: 480px;
+        margin: 12px 0 36px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .case-row {
+        display: grid;
+        grid-template-columns: 1.7fr 0.95fr;
+        gap: 48px;
+        align-items: center;
+        padding: 0 0 40px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .case-row.alt {
+        grid-template-columns: 0.95fr 1.7fr;
+        padding-top: 30px;
+      }
+
+      .case-image {
+        height: 360px;
+        padding: 14px;
+      }
+
+      .case-row.alt .case-image {
+        height: 330px;
+      }
+
+      .meta {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .meta b {
+        color: var(--accent);
+        font-size: 17px;
+        letter-spacing: 0.15em;
+      }
+
+      .case-title {
+        margin: 22px 0 12px;
+        font-size: 31px;
+        font-weight: 900;
+        letter-spacing: -0.035em;
+        line-height: 1.05;
+      }
+
+      .category {
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .case-desc {
+        margin: 18px 0 20px;
+        color: #5a616b;
+        line-height: 1.65;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: white;
+        padding: 7px 16px;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .text-link {
+        display: inline-flex;
+        gap: 12px;
+        margin-top: 30px;
+        color: var(--accent);
+        font-size: 18px;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .archive-head {
+        display: grid;
+        grid-template-columns: 1fr minmax(320px, 420px);
+        gap: 32px;
+        align-items: end;
+        margin: 30px 0 16px;
+      }
+
+      .archive-head h2 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .filter {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 9px 20px;
+        background: white;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .filter.active {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: white;
+      }
+
+      .search {
+        display: flex;
+        height: 42px;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: white;
+        padding: 0 16px 0 24px;
+        color: #949494;
+        font-size: 13px;
+      }
+
+      .archive-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+      }
+
+      .archive-card {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr);
+        gap: 22px;
+        min-height: 196px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: white;
+        padding: 18px;
+      }
+
+      .archive-card .paper-canvas {
+        min-height: 160px;
+        padding: 8px;
+      }
+
+      .archive-card h3 {
+        margin: 12px 0 8px;
+        font-size: 20px;
+        line-height: 1.08;
+      }
+
+      .about-page {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 392px;
+        gap: 34px;
+        padding: 34px 42px;
+      }
+
+      .about-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 190px;
+        gap: 34px;
+        align-items: start;
+      }
+
+      .about-title {
+        margin: 0;
+        font-size: 72px;
+        font-weight: 900;
+        letter-spacing: -0.06em;
+        line-height: 0.94;
+      }
+
+      .about-copy {
+        max-width: 640px;
+        margin: 18px 0 0;
+        color: #3f464f;
+        font-size: 16px;
+        line-height: 1.62;
+      }
+
+      .quote {
+        margin-top: 22px;
+        border-left: 2px solid var(--accent);
+        padding-left: 22px;
+        color: #313942;
+        line-height: 1.65;
+      }
+
+      .portrait {
+        width: 176px;
+        height: 176px;
+        justify-self: center;
+        align-self: start;
+        border-radius: 50%;
+        padding: 0;
+      }
+
+      .portrait img {
+        object-fit: cover;
+        object-position: center top;
+      }
+
+      .about-sections {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 24px;
+        margin-top: 42px;
+        border-top: 1px solid #bbb;
+        padding-top: 24px;
+      }
+
+      .cv-col {
+        min-height: 420px;
+        border-right: 1px solid var(--line);
+        padding-right: 22px;
+      }
+
+      .cv-col:last-child {
+        border-right: 0;
+      }
+
+      .number-head {
+        display: flex;
+        gap: 22px;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .number-head span {
+        color: var(--accent);
+        font-size: 22px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+      }
+
+      .number-head h2 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 78px minmax(0, 1fr);
+        gap: 18px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 16px;
+        margin-bottom: 18px;
+      }
+
+      .timeline-dot {
+        position: relative;
+        padding-left: 22px;
+        color: #3f4650;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .timeline-dot::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 5px;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      .timeline-item h3,
+      .process h3 {
+        margin: 0 0 4px;
+        color: #141414;
+        font-size: 16px;
+      }
+
+      .timeline-item p,
+      .process p {
+        margin: 8px 0 0;
+        color: #4e5660;
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      .tool-group {
+        margin-bottom: 22px;
+      }
+
+      .tool-group h3 {
+        margin: 0 0 10px;
+        color: var(--accent);
+        font-size: 13px;
+      }
+
+      .proficiency-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 24px;
+      }
+
+      .proficiency-row {
+        display: grid;
+        grid-template-columns: 104px minmax(0, 1fr);
+        gap: 14px;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 10px 12px;
+      }
+
+      .proficiency-row strong {
+        color: var(--accent);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .proficiency-row span {
+        color: #141414;
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .process {
+        display: grid;
+        grid-template-columns: 54px minmax(0, 1fr);
+        gap: 18px;
+        margin-bottom: 22px;
+      }
+
+      .process-icon {
+        display: grid;
+        width: 50px;
+        height: 50px;
+        place-items: center;
+        border: 1px solid var(--accent);
+        border-radius: 50%;
+        color: var(--accent);
+        font-size: 22px;
+      }
+
+      .side-panel {
+        display: grid;
+        gap: 18px;
+      }
+
+      .side-card {
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: rgba(255, 255, 255, 0.72);
+        padding: 22px;
+      }
+
+      .side-card h3 {
+        margin: 0 0 14px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 14px;
+        font-size: 17px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .side-row {
+        display: grid;
+        grid-template-columns: 28px minmax(0, 1fr);
+        gap: 16px;
+        margin: 14px 0;
+        color: #1d252d;
+      }
+
+      .tool-icons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .tool-pill {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: white;
+        padding: 7px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .tool-logo {
+        width: 30px;
+        height: 30px;
+        flex: 0 0 auto;
+        border-radius: 6px;
+        object-fit: contain;
+      }
+
+      .badge {
+        display: grid;
+        width: 28px;
+        height: 28px;
+        place-items: center;
+        border-radius: 4px;
+        background: var(--accent);
+        color: white;
+        font-weight: 900;
+      }
+
+      .checks {
+        display: grid;
+        gap: 12px;
+        color: #303943;
+        font-size: 14px;
+      }
+
+      .download-wide {
+        display: flex;
+        height: 56px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 18px;
+        border-radius: 6px;
+        background: linear-gradient(180deg, #0f568f, #0b4577);
+        color: white;
+        font-weight: 900;
+      }
+
+      .contact-page {
+        min-height: 1000px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .contact-main {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 460px);
+        gap: 68px;
+        padding: 62px 76px 0;
+      }
+
+      .contact-title {
+        margin: 0;
+        font-size: 106px;
+        font-weight: 900;
+        letter-spacing: -0.07em;
+        line-height: 0.9;
+      }
+
+      .contact-intent {
+        max-width: 470px;
+        margin: 28px 0 32px;
+        color: #50575f;
+        font-size: 18px;
+        line-height: 1.58;
+      }
+
+      .contact-method {
+        display: grid;
+        grid-template-columns: 56px minmax(0, 1fr);
+        gap: 22px;
+        align-items: center;
+        border-bottom: 1px solid var(--line);
+        padding: 22px 0;
+      }
+
+      .contact-method .round {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        color: var(--accent);
+        font-size: 22px;
+      }
+
+      .contact-method span,
+      .mini-label {
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .contact-method strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 22px;
+        overflow-wrap: anywhere;
+      }
+
+      .contact-method small {
+        color: var(--muted);
+      }
+
+      .opportunity {
+        display: grid;
+        grid-template-columns: 46px minmax(0, 1fr);
+        gap: 18px;
+        align-items: center;
+        margin-top: 28px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.68);
+        padding: 20px;
+      }
+
+      .drawing-band {
+        position: absolute;
+        right: 0;
+        bottom: 78px;
+        left: 0;
+        height: 215px;
+        opacity: 0.19;
+      }
+
+      .drawing-band img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        filter: grayscale(1);
+      }
+
+      .footer {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        height: 78px;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--line);
+        background: rgba(247, 247, 243, 0.82);
+        padding: 0 54px;
+        color: #545a61;
+      }
+
+      .socials {
+        display: flex;
+        gap: 26px;
+        color: #111;
+        font-size: 20px;
+      }
+
+      .mobile-main {
+        padding: 28px 20px;
+      }
+
+      .mobile .eyebrow {
+        margin-bottom: 14px;
+        font-size: 10px;
+      }
+
+      .mobile .home-title,
+      .mobile .page-title,
+      .mobile .contact-title {
+        font-size: 44px;
+        letter-spacing: -0.055em;
+        line-height: 0.92;
+      }
+
+      .mobile .role {
+        margin-top: 14px;
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      .mobile .summary,
+      .mobile .work-lead,
+      .mobile .case-desc,
+      .mobile .contact-intent {
+        font-size: 13px;
+        line-height: 1.62;
+      }
+
+      .mobile .actions {
+        display: grid;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .mobile .btn {
+        width: 100%;
+      }
+
+      .mobile .stats {
+        grid-template-columns: repeat(3, 1fr);
+        margin-top: 22px;
+      }
+
+      .mobile .stat {
+        min-height: 82px;
+        padding: 14px 12px;
+      }
+
+      .mobile .stat strong {
+        font-size: 22px;
+      }
+
+      .mobile .stat span {
+        font-size: 10px;
+      }
+
+      .mobile .evidence-board {
+        display: grid;
+        grid-template-columns: 1.06fr 0.94fr;
+        align-items: end;
+        gap: 14px;
+        min-height: 330px;
+        margin: 20px 0 -2px;
+        padding: 18px 8px 28px;
+      }
+
+      .mobile .model-cutout {
+        min-width: 0;
+      }
+
+      .mobile .model-cutout.primary {
+        transform: scale(1.06);
+      }
+
+      .mobile .model-cutout.secondary {
+        transform: scale(0.98);
+      }
+
+      .mobile .evidence-board::after {
+        bottom: 22px;
+      }
+
+      .mobile .service-strip {
+        grid-template-columns: repeat(5, 1fr);
+      }
+
+      .mobile .service {
+        display: block;
+        min-height: 66px;
+        padding: 10px 6px;
+        text-align: center;
+      }
+
+      .mobile .service b {
+        margin-top: 4px;
+        font-size: 7px;
+        letter-spacing: 0;
+      }
+
+      .mobile .service span {
+        display: none;
+      }
+
+      .mobile .icon-box {
+        width: auto;
+        height: auto;
+        font-size: 18px;
+      }
+
+      .mobile .work-page {
+        padding: 30px 20px;
+      }
+
+      .mobile .case-row,
+      .mobile .case-row.alt {
+        display: block;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: white;
+        padding: 0;
+        margin-bottom: 22px;
+      }
+
+      .mobile .case-row.alt .case-copy {
+        padding: 0 18px 22px;
+      }
+
+      .mobile .case-copy {
+        padding: 0 18px 22px;
+      }
+
+      .mobile .case-image,
+      .mobile .case-row.alt .case-image {
+        height: 186px;
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        border-radius: 10px 10px 0 0;
+        padding: 10px;
+      }
+
+      .mobile .case-title {
+        margin-top: 12px;
+        font-size: 20px;
+      }
+
+      .mobile .archive-head {
+        display: block;
+      }
+
+      .mobile .archive-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mobile .archive-card {
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 14px;
+        padding: 12px;
+        min-height: 142px;
+      }
+
+      .mobile .archive-card .paper-canvas {
+        min-height: 116px;
+      }
+
+      .mobile .archive-card h3 {
+        font-size: 17px;
+      }
+
+      .mobile .about-page {
+        display: block;
+        padding: 26px 20px;
+      }
+
+      .mobile .about-top {
+        display: block;
+      }
+
+      .mobile .about-title {
+        font-size: 44px;
+      }
+
+      .mobile .portrait {
+        height: 260px;
+        margin: 18px 0;
+      }
+
+      .mobile .about-sections {
+        display: block;
+        margin-top: 24px;
+      }
+
+      .mobile .cv-col {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        min-height: 0;
+        padding: 0 0 24px;
+        margin-bottom: 24px;
+      }
+
+      .mobile .side-panel {
+        margin-top: 24px;
+      }
+
+      .mobile .contact-main {
+        display: block;
+        padding: 28px 20px 0;
+      }
+
+      .mobile .contact-method {
+        grid-template-columns: 46px minmax(0, 1fr);
+        gap: 14px;
+        padding: 18px 0;
+      }
+
+      .mobile .contact-method .round {
+        width: 42px;
+        height: 42px;
+        font-size: 20px;
+      }
+
+      .mobile .contact-method strong {
+        font-size: 14px;
+      }
+
+      .mobile .opportunity {
+        grid-template-columns: 44px minmax(0, 1fr);
+        padding: 16px;
+      }
+
+      .mobile .drawing-band {
+        display: none;
+      }
+
+      .mobile .footer {
+        position: static;
+        height: auto;
+        margin-top: 28px;
+        padding: 18px 20px;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="state" data-page="home">
+      <div class="mock-pair">
+        <div>
+          <p class="mock-label">Desktop</p>
+          <div class="frame desktop">
+            <nav class="nav">
+              <div class="brand"><div class="mark">NL</div><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div>
+              <div class="nav-links"><a>Work</a><a>About</a><a>Contact</a><a class="btn primary nav-cta">Get in Touch</a></div>
+            </nav>
+            <main class="desktop-pad">
+              <section class="home-hero">
+                <div class="home-copy">
+                  <p class="eyebrow">Bangkok, Thailand / BIM Professional</p>
+                  <h1 class="home-title">Nattapong<br /><span>Loes-a-nan</span></h1>
+                  <p class="role">Office Engineer | BIM Specialist | BIM Coordinator</p>
+                  <div class="skill-line"><span>BIM Production</span><span>·</span><span>BIM Coordination</span><span>·</span><span>Revit Documentation</span><span>·</span><span>QTO / BOQ</span><span>·</span><span>CDE</span><span>·</span><span>Power BI</span></div>
+                  <p class="summary">BIM Engineer with 7+ years of experience across design and construction phases, specializing in BIM production, BIM coordination, CDE setup, model QA/QC, clash detection, shop drawings, and model-based QTO/BOQ to support efficient project delivery.</p>
+                  <div class="actions"><a class="btn primary">View Work -></a><a class="btn">Download CV</a></div>
+                  <div class="stats"><div class="stat"><strong>7+</strong><span>Years Experience</span></div><div class="stat"><strong>15</strong><span>Portfolio Projects</span></div><div class="stat"><strong>2</strong><span>Phases<br />Design + Construction</span></div></div>
+                </div>
+                <figure class="evidence-board">
+                  <div class="model-cutout primary"><img src="/images/home/3d-per-05-display.png" alt="3D perspective BIM model view" /></div>
+                  <div class="model-cutout secondary"><img src="/images/home/3d-per-01-display.png" alt="3D perspective BIM model view alternate angle" /></div>
+                </figure>
+              </section>
+            </main>
+            <section class="service-strip">
+              <div class="service"><div class="icon-box">□</div><div><b>BIM Production</b><span>Models, shop drawings and documentation</span></div></div>
+              <div class="service"><div class="icon-box">◎</div><div><b>BIM Coordination</b><span>Clash detection, issue tracking and meetings</span></div></div>
+              <div class="service"><div class="icon-box">▤</div><div><b>Revit Documentation</b><span>Drawing sets, symbols, families and templates</span></div></div>
+              <div class="service"><div class="icon-box">◉</div><div><b>CDE & Control</b><span>BEP, document control and revision management</span></div></div>
+              <div class="service"><div class="icon-box">▥</div><div><b>QTO / BOQ</b><span>Quantity takeoff, BOQ and cost planning</span></div></div>
+            </section>
+            <section class="selected-strip">
+              <p class="eyebrow">Featured Work</p>
+              <h2>Selected BIM Projects</h2>
+              <p class="work-lead">A selection of projects highlighting coordination, issue reporting, and model-based quantity workflows.</p>
+            </section>
+          </div>
+        </div>
+        <div>
+          <p class="mock-label">Mobile</p>
+          <div class="frame mobile">
+            <nav class="nav"><div class="brand"><div class="mark">NL</div><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><div class="hamburger"><span></span><span></span><span></span></div></nav>
+            <main class="mobile-main">
+              <p class="eyebrow">Bangkok, Thailand / BIM Professional</p>
+              <h1 class="home-title">Nattapong<br /><span>Loes-a-nan</span></h1>
+              <p class="role">Office Engineer | BIM Specialist | BIM Coordinator</p>
+              <p class="summary">BIM Engineer with 7+ years of experience across design and construction phases, specializing in BIM production, BIM coordination, CDE setup, model QA/QC, clash detection, shop drawings, and model-based QTO/BOQ.</p>
+              <div class="actions"><a class="btn primary">View Work -></a><a class="btn">Download CV</a></div>
+              <div class="stats"><div class="stat"><strong>7+</strong><span>Years Experience</span></div><div class="stat"><strong>15</strong><span>Portfolio Projects</span></div><div class="stat"><strong>2</strong><span>Phases<br />Design + Construction</span></div></div>
+              <figure class="evidence-board"><div class="model-cutout primary"><img src="/images/home/3d-per-05-display.png" alt="" /></div><div class="model-cutout secondary"><img src="/images/home/3d-per-01-display.png" alt="" /></div></figure>
+            </main>
+            <section class="service-strip">
+              <div class="service"><div class="icon-box">□</div><b>BIM Production</b></div><div class="service"><div class="icon-box">◎</div><b>BIM Coordination</b></div><div class="service"><div class="icon-box">▤</div><b>Revit Docs</b></div><div class="service"><div class="icon-box">◉</div><b>CDE</b></div><div class="service"><div class="icon-box">▥</div><b>QTO / BOQ</b></div>
+            </section>
+            <section class="mobile-main"><p class="eyebrow">Featured Work</p><h2 style="margin:0;font-size:28px">Selected BIM Projects</h2></section>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="state" data-page="work">
+      <div class="mock-pair">
+        <div>
+          <p class="mock-label">Desktop</p>
+          <div class="frame desktop">
+            <nav class="nav"><div class="brand"><div class="mark">NL</div><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><div class="nav-links"><a>Home</a><a class="active">Work</a><a>About</a><a>Contact</a><a class="btn primary nav-cta">Get in Touch</a></div></nav>
+            <main class="work-page">
+              <p class="eyebrow">Work</p>
+              <h1 class="page-title">Selected BIM Work</h1>
+              <p class="work-lead">A selection of projects showcasing BIM production, coordination, issue reporting, and model-based quantity workflows.</p>
+              <section class="case-row">
+                <figure class="paper-canvas case-image"><img src="/portfolio/image71.png" alt="" /></figure>
+                <div class="case-copy"><div class="meta"><b>01</b><span>/</span><span>2023-Present</span></div><h2 class="case-title">Tracking Model<br />Progress</h2><p class="category">BIM Coordination & Management</p><p class="case-desc">Progress tracking workflow for BIM model status, discipline progress, weekly reports, delay visibility, and action item communication.</p><div class="chips"><span class="chip">Power BI</span><span class="chip">Excel</span><span class="chip">Revit</span><span class="chip">Navisworks</span><span class="chip">ACC</span></div><a class="text-link">View Project -></a></div>
+              </section>
+              <section class="case-row alt">
+                <div class="case-copy"><div class="meta"><b>02</b><span>/</span><span>2023-Present</span></div><h2 class="case-title">Clash and<br />Issue Reports</h2><p class="category">BIM Coordination & Management</p><p class="case-desc">Clash detection and issue reporting workflow to support design-to-construction transition and pre-construction coordination.</p><div class="chips"><span class="chip">Navisworks</span><span class="chip">Revit</span><span class="chip">ACC</span><span class="chip">BIM360 Docs</span></div><a class="text-link">View Project -></a></div>
+                <figure class="paper-canvas case-image"><img src="/portfolio/image74.png" alt="" /></figure>
+              </section>
+              <section class="archive-head"><div><h2>All Projects Archive</h2><p style="margin:4px 0 0;color:#666;font-size:13px">Browse more BIM work by category or search by project name, tool, or workflow.</p><div class="filters"><span class="filter active">All</span><span class="filter">BIM Production</span><span class="filter">BIM Coordination & Management</span></div></div><div class="search">Search projects, tools, or outputs... <span>⌕</span></div></section>
+              <section class="archive-grid">
+                <article class="archive-card"><figure class="paper-canvas"><img src="/portfolio/image61.png" alt="" /></figure><div><div class="meta"><b>03</b><span>/</span><span>2017-2023</span></div><h3>Schedule & Quantities: Waterproof</h3><p class="category">BIM Production</p><p style="color:#666;font-size:13px;line-height:1.5">Model-based waterproofing scope visualization and quantity takeoff for BOQ preparation.</p><div class="chips"><span class="chip">Revit</span><span class="chip">Excel</span></div></div></article>
+                <article class="archive-card"><figure class="paper-canvas"><img src="/portfolio/image80.jpeg" alt="" /></figure><div><div class="meta"><b>04</b><span>/</span><span>2023-Present</span></div><h3>Structural Model Coordination</h3><p class="category">BIM Coordination & Management</p><p style="color:#666;font-size:13px;line-height:1.5">Structural model coordination, clash review, and coordination meetings.</p><div class="chips"><span class="chip">Navisworks</span><span class="chip">Revit</span><span class="chip">ACC</span></div></div></article>
+              </section>
+            </main>
+          </div>
+        </div>
+        <div>
+          <p class="mock-label">Mobile</p>
+          <div class="frame mobile">
+            <nav class="nav"><div class="brand"><div class="mark">NL</div><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><div class="hamburger"><span></span><span></span><span></span></div></nav>
+            <main class="work-page"><p class="eyebrow">Work</p><h1 class="page-title">Selected BIM Work</h1><p class="work-lead">A selection of projects showcasing BIM production, coordination, issue reporting, and model-based quantity workflows.</p>
+              <section class="case-row"><figure class="paper-canvas case-image"><img src="/portfolio/image71.png" alt="" /></figure><div class="case-copy"><div class="meta"><b>01</b><span>/</span><span>2023-Present</span></div><h2 class="case-title">Tracking Model Progress</h2><p class="category">BIM Coordination & Management</p><p class="case-desc">Progress tracking workflow for BIM model status, discipline progress, weekly reports, delay visibility, and action item communication.</p><div class="chips"><span class="chip">Power BI</span><span class="chip">Excel</span><span class="chip">Revit</span><span class="chip">Navisworks</span><span class="chip">ACC</span></div><a class="text-link">View Project -></a></div></section>
+              <section class="case-row"><figure class="paper-canvas case-image"><img src="/portfolio/image74.png" alt="" /></figure><div class="case-copy"><div class="meta"><b>02</b><span>/</span><span>2023-Present</span></div><h2 class="case-title">Clash and Issue Reports</h2><p class="category">BIM Coordination & Management</p><p class="case-desc">Clash detection and issue reporting workflow to support design-to-construction transition and pre-construction coordination.</p><div class="chips"><span class="chip">Navisworks</span><span class="chip">Revit</span><span class="chip">ACC</span><span class="chip">BIM360 Docs</span></div><a class="text-link">View Project -></a></div></section>
+              <section class="archive-head"><div><h2>All Projects Archive</h2><div class="filters"><span class="filter active">All</span><span class="filter">BIM Production</span><span class="filter">BIM Coordination & Management</span></div></div><div class="search">Search projects, tools, or outputs... <span>⌕</span></div></section>
+              <section class="archive-grid"><article class="archive-card"><figure class="paper-canvas"><img src="/portfolio/image61.png" alt="" /></figure><div><div class="meta"><b>03</b><span>/</span><span>2017-2023</span></div><h3>Schedule & Quantities: Waterproof</h3><p class="category">BIM Production</p></div></article></section>
+            </main>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="state" data-page="about">
+      <div class="frame desktop">
+              <nav class="nav"><div class="brand"><div class="mark">NL</div><div><strong>Nattapong Loes-a-nan</strong><span>BIM Portfolio</span></div></div><div class="nav-links"><a>Home</a><a>Work</a><a class="active">About</a><a>Contact</a><a class="btn primary nav-cta">Get in Touch</a></div></nav>
+        <main class="about-page">
+          <section>
+            <div class="about-top">
+              <div><p class="eyebrow">About / CV</p><h1 class="about-title">Nattapong<br />Loes-a-nan</h1><p class="role">Office Engineer | BIM Specialist | BIM Coordinator</p><p class="about-copy">BIM Engineer with 7+ years of experience across design and construction phases. I specialize in BIM production, coordination, CDE setup, model QA/QC, clash detection, shop drawings, and model-based QTO/BOQ to support efficient project delivery.</p><p class="quote">I connect people, models, and data to deliver coordinated BIM solutions that support better decisions on site.</p></div>
+              <figure class="paper-canvas portrait"><img src="/images/profile/nattapong-profile.jpg" alt="Nattapong Loes-a-nan profile portrait" /></figure>
+            </div>
+            <section class="about-sections">
+              <div class="cv-col"><div class="number-head"><span>01</span><h2>Experience</h2></div><div class="timeline-item"><div class="timeline-dot">Nov 2023<br />- Present</div><div><h3>Freelance BIM Coordinator</h3><p><b style="color:var(--accent)">Freelance</b> · Bangkok, Thailand</p><p>BIM coordination for design-stage and construction-stage projects, including BEP, CDE, QA/QC, clash checking, weekly BIM reports, and issue reporting.</p></div></div><div class="timeline-item"><div class="timeline-dot">Mar 2023<br />- Oct 2023</div><div><h3>BIM Engineer & Modeler</h3><p><b style="color:var(--accent)">Thai Kajima Co., Ltd.</b> · Rayong, Thailand</p><p>Coordinated 3D BIM models, shop drawings, QTO, procurement support, scheduling, material tracking, and As-Built planning.</p></div></div><div class="timeline-item"><div class="timeline-dot">Jul 2017<br />- Mar 2023</div><div><h3>Office Engineer (BIM)</h3><p><b style="color:var(--accent)">Ritta Co., Ltd.</b> · Bangkok, Thailand</p><p>BIM standards, Revit templates, CDE/document control, structural BIM modeling, shop drawings, Power BI tracking, BIM QTO, RFIs, and coordination.</p></div></div><a class="text-link">View full timeline -></a></div>
+              <div class="cv-col"><div class="number-head"><span>02</span><h2>Skills & Tools</h2></div><div class="tool-group"><h3>BIM Coordination</h3><div class="chips"><span class="chip">Clash Detection</span><span class="chip">Issue Tracking</span><span class="chip">Coordination Meeting</span><span class="chip">Model QA/QC</span><span class="chip">Model Validation</span></div></div><div class="tool-group"><h3>BIM Production</h3><div class="chips"><span class="chip">Revit Modeling</span><span class="chip">Shop Drawings</span><span class="chip">Documentation</span><span class="chip">Families & Templates</span><span class="chip">CDE & Document Control</span></div></div><div class="tool-group"><h3>Data & Reporting</h3><div class="chips"><span class="chip">QTO / BOQ</span><span class="chip">Quantity Takeoff</span><span class="chip">Power BI Dashboards</span><span class="chip">Excel Reporting</span></div></div><div class="proficiency-list"><div class="proficiency-row"><strong>Expert</strong><span>Revit</span></div><div class="proficiency-row"><strong>Advanced</strong><span>Navisworks</span></div><div class="proficiency-row"><strong>Intermediate</strong><span>Power BI / Excel / Power Query / Autodesk Forma / Dynamo / pyRevit</span></div></div></div>
+              <div class="cv-col"><div class="number-head"><span>03</span><h2>BIM Process & Coordination</h2></div><div class="process"><div class="process-icon">◎</div><div><h3>Project Setup</h3><p>Review BEP, information exchange requirement, folder structure, and CDE workflow.</p></div></div><div class="process"><div class="process-icon">□</div><div><h3>Model Coordination</h3><p>Coordinate disciplines, run clash detection, and manage issues through structured workflows.</p></div></div><div class="process"><div class="process-icon">✓</div><div><h3>Quality & Validation</h3><p>Perform model QA/QC, quantity validation, and data accuracy checks.</p></div></div><div class="process"><div class="process-icon">▥</div><div><h3>Reporting & Delivery</h3><p>Create weekly reports, dashboards, QTO/BOQ, and coordinated outputs to support decisions.</p></div></div></div>
+            </section>
+            <div class="download-wide">Download CV (PDF)</div>
+          </section>
+          <aside class="side-panel">
+            <div class="side-card"><h3>Contact</h3><div class="side-row"><span>✉</span><span>badtz.mos@gmail.com</span></div><div class="side-row"><span>☎</span><span>085 033 1812</span></div><div class="side-row"><span>in</span><span>linkedin.com/in/nattapong-loesanan</span></div></div>
+            <div class="side-card"><h3>Location</h3><div class="side-row"><span>⌖</span><span>Bangkok, Thailand<br /><small>Available for projects nationwide</small></span></div></div>
+            <div class="side-card"><h3>Core Tools</h3><div class="tool-icons"><div class="tool-pill"><img class="tool-logo" src="/images/tools-real/revit.png" alt="" />Revit</div><div class="tool-pill"><img class="tool-logo" src="/images/tools-real/navisworks.png" alt="" />Navisworks</div><div class="tool-pill"><img class="tool-logo" src="/images/tools-real/power-bi.webp" alt="" />Power BI</div><div class="tool-pill"><img class="tool-logo" src="/images/tools-real/excel.svg" alt="" />Excel</div><div class="tool-pill"><img class="tool-logo" src="/images/tools-real/power-query.png" alt="" />Power Query</div><div class="tool-pill"><img class="tool-logo" src="/images/tools-real/autodesk-forma.png" alt="" />Autodesk Forma</div><div class="tool-pill"><img class="tool-logo" src="/images/tools-real/pyrevit.webp" alt="" />pyRevit</div></div></div>
+            <div class="side-card"><h3>Credentials / Focus</h3><div class="checks"><span>✓ BIM Production & Documentation</span><span>✓ BIM Coordination & Clash Management</span><span>✓ Model QA/QC & Validation</span><span>✓ QTO/BOQ & Quantity Takeoff</span><span>✓ Data-driven Reporting & Dashboards</span><span>✓ CDE & Document Control</span></div></div>
+          </aside>
+        </main>
+      </div>
+    </section>
+
+    <section class="state" data-page="contact">
+      <div class="mock-pair">
+        <div>
+          <p class="mock-label">Desktop</p>
+          <div class="frame desktop contact-page">
+              <nav class="nav"><div class="brand"><div class="mark">NL</div><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><div class="nav-links"><a>Home</a><a>Work</a><a>About</a><a class="active">Contact</a><a class="btn primary nav-cta">Get in Touch</a></div></nav>
+            <main class="contact-main">
+              <section><p class="eyebrow">Contact</p><h1 class="contact-title">Let's<br />connect.</h1><p class="contact-intent">For BIM coordination, BIM production, model QA/QC, quantity takeoff, or portfolio discussion.</p><div class="actions"><a class="btn primary">✉ Email Me</a><a class="btn">↓ Download CV</a><a class="btn">↗ View Work</a></div></section>
+              <aside><div class="contact-method"><div class="round">✉</div><div><span>Email</span><strong>badtz.mos@gmail.com</strong></div></div><div class="contact-method"><div class="round">☎</div><div><span>Phone</span><strong>0850331812</strong></div></div><div class="contact-method"><div class="round">⌖</div><div><span>Based</span><strong>Bangkok, Thailand</strong><small>Available for projects nationwide</small></div></div><div class="opportunity"><div class="round" style="font-size:28px;color:var(--accent)">◎</div><div><b>Open to new opportunities</b><p style="margin:8px 0 0;color:#56606a;line-height:1.55">Freelance or full-time roles in BIM coordination, BIM production, CDE management, and project support.</p></div></div></aside>
+            </main>
+            <div class="drawing-band"><img src="/portfolio/image16.png" alt="" /></div>
+            <footer class="footer"><span>© 2026 Nattapong Loes-a-nan. All rights reserved.</span><span class="socials">in ● ✉</span><span>Bangkok, Thailand &nbsp;&nbsp; | &nbsp;&nbsp; Back to top ↑</span></footer>
+          </div>
+        </div>
+        <div>
+          <p class="mock-label">Mobile</p>
+          <div class="frame mobile contact-page">
+            <nav class="nav"><div class="brand"><div class="mark">NL</div><div><strong>Nattapong</strong><span>BIM Portfolio</span></div></div><div class="hamburger"><span></span><span></span><span></span></div></nav>
+            <main class="contact-main"><section><p class="eyebrow">Contact</p><h1 class="contact-title">Let's<br />connect.</h1><p class="contact-intent">For BIM coordination, BIM production, model QA/QC, quantity takeoff, or portfolio discussion.</p></section><aside><div class="contact-method"><div class="round">✉</div><div><span>Email</span><strong>badtz.mos@gmail.com</strong></div></div><div class="contact-method"><div class="round">☎</div><div><span>Phone</span><strong>0850331812</strong></div></div><div class="contact-method"><div class="round">⌖</div><div><span>Based</span><strong>Bangkok, Thailand</strong><small>Available for projects nationwide</small></div></div><div class="opportunity"><div class="round" style="font-size:22px;color:var(--accent)">◎</div><div><b>Open to new opportunities</b><p style="margin:8px 0 0;color:#56606a;font-size:12px;line-height:1.55">Freelance or full-time roles in BIM coordination, BIM production, CDE management, and project support.</p></div></div><div class="actions"><a class="btn primary">✉ Email Me</a><a class="btn">↓ Download CV</a><a class="btn">↗ View Work</a></div></aside></main>
+            <footer class="footer"><span>© 2026 Nattapong Loes-a-nan.<br />All rights reserved.</span><span>Bangkok, Thailand | Back to top ↑</span></footer>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const page = params.get("page") || "home";
+      document.querySelector(`[data-page="${page}"]`)?.classList.add("active");
+    </script>
+  </body>
+</html>
