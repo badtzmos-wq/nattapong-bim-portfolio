@@ -197,7 +197,7 @@ export default function App() {
 
       {currentPage !== "contact" ? <Footer currentPage={currentPage} onNavigate={navigateTo} /> : null}
       <BackToTopButton visible={showBackToTop} />
-      <AnimatePresence>{selectedProject ? <ProjectDetail project={selectedProject} onClose={() => setSelectedProject(null)} /> : null}</AnimatePresence>
+      <AnimatePresence>{selectedProject ? <ProjectDetail project={selectedProject} onClose={() => setSelectedProject(null)} onSelectProject={setSelectedProject} /> : null}</AnimatePresence>
     </div>
   );
 }
@@ -546,7 +546,7 @@ function ProjectCard({ project, featured = false, onSelect }: { project: Project
   );
 }
 
-function ProjectDetail({ project, onClose }: { project: Project; onClose: () => void }) {
+function ProjectDetail({ project, onClose, onSelectProject }: { project: Project; onClose: () => void; onSelectProject: (project: Project) => void }) {
   const currentIndex = projects.findIndex((item) => item.id === project.id);
   const nextProject = projects[(currentIndex + 1) % projects.length];
   const images = useMemo(
@@ -571,6 +571,11 @@ function ProjectDetail({ project, onClose }: { project: Project; onClose: () => 
     setActiveImage(images[0] ?? "");
     setLightboxOpen(false);
   }, [images]);
+
+  useEffect(() => {
+    const content = document.querySelector(".detail-content");
+    content?.scrollTo({ top: 0, behavior: "auto" });
+  }, [project.id]);
 
   const showPreviousImage = () => {
     setActiveImage((currentImage) => {
@@ -713,7 +718,7 @@ function ProjectDetail({ project, onClose }: { project: Project; onClose: () => 
             <button className="button-secondary" type="button" onClick={onClose}>
               &lt;- All Projects
             </button>
-            <button className="button-primary" type="button" onClick={() => { onClose(); setTimeout(() => window.dispatchEvent(new CustomEvent("open-project", { detail: nextProject.id })), 0); }}>
+            <button className="button-primary" type="button" onClick={() => onSelectProject(nextProject)}>
               Next Project -&gt;
             </button>
           </div>

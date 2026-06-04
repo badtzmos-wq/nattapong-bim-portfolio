@@ -69,6 +69,9 @@ async function evaluate(expression) {
     awaitPromise: true,
     returnByValue: true,
   });
+  if (result.result.exceptionDetails) {
+    throw new Error(result.result.exceptionDetails.exception?.description || result.result.exceptionDetails.text || "Runtime.evaluate failed");
+  }
   return result.result.result.value;
 }
 
@@ -104,6 +107,11 @@ const rendered = await evaluate(String.raw`
     };
   })()
 `);
+
+if (!rendered) {
+  ws.close();
+  throw new Error("Redaction audit returned no rendered project state.");
+}
 
 const renderedPaths = [...rendered.srcs, rendered.lightboxSrc].filter(Boolean);
 const renderedFailures = [];

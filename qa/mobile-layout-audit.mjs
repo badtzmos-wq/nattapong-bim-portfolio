@@ -38,14 +38,14 @@ async function wait(ms = 900) {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function waitForHash(hash, timeout = 4000) {
+async function waitForHash(hash, timeout = 6000) {
   const target = `#${hash}`;
   const startedAt = Date.now();
 
   while (Date.now() - startedAt < timeout) {
     const currentHash = await evaluate("location.hash");
-    const readyState = await evaluate("document.readyState");
-    if (currentHash === target && readyState === "complete") return;
+    const pageVisible = await evaluate("Boolean(document.querySelector('main'))");
+    if (currentHash === target && pageVisible) return;
     await wait(100);
   }
 
@@ -67,6 +67,9 @@ async function evaluate(expression) {
     awaitPromise: true,
     returnByValue: true,
   });
+  if (result.result.exceptionDetails) {
+    throw new Error(result.result.exceptionDetails.exception?.description || result.result.exceptionDetails.text || "Runtime.evaluate failed");
+  }
   return result.result.result.value;
 }
 
@@ -74,8 +77,9 @@ async function audit(hash, width) {
   await setViewport(width);
   await send("Page.navigate", { url: `${baseUrl}/#${hash}` });
   await waitForHash(hash);
+  await evaluate(`document.querySelector(".detail-close-icon")?.click();`);
   await wait(350);
-  return evaluate(String.raw`
+  const result = await evaluate(String.raw`
     (() => {
       const box = (selector) => {
         const element = document.querySelector(selector);
@@ -101,6 +105,16 @@ async function audit(hash, width) {
       const cvHero = box(".cv-hero");
       const cvColumns = box(".cv-columns");
       const cvSidebar = box(".cv-sidebar");
+      const serviceStrip = document.querySelector(".service-strip");
+      const serviceItems = [...document.querySelectorAll(".service-item")].map((item) => {
+        const rect = item.getBoundingClientRect();
+        const title = item.querySelector("h2");
+        return {
+          width: rect.width,
+          titleFits: !title || title.scrollWidth <= title.clientWidth + 1,
+          titleHeight: title?.getBoundingClientRect().height || 0,
+        };
+      });
       return {
         hash: location.hash,
         width: innerWidth,
@@ -117,9 +131,18 @@ async function audit(hash, width) {
         cvSidebarWideEnough: !cvSidebar || cvSidebar.width >= Math.min(300, innerWidth - 40),
         aboutSidebarDoesNotOverlap: !cvSidebar || (!overlaps(cvSidebar, cvHero) && !overlaps(cvSidebar, cvColumns)),
         heroDoesNotOverlapText: !heroEvidence || !overlaps(heroEvidence, heroCopy),
+        serviceStripOk: !serviceStrip || innerWidth >= 768 || (
+          getComputedStyle(serviceStrip).display === "flex" &&
+          serviceItems.length === 5 &&
+          serviceItems.every((item) => item.width >= 150 && item.titleFits && item.titleHeight <= 48)
+        ),
       };
     })()
   `);
+  if (!result) {
+    throw new Error(`Audit returned no result for #${hash} at ${width}px.`);
+  }
+  return result;
 }
 
 const widths = [390, 768];
@@ -139,7 +162,8 @@ const failures = results.filter((result) => (
   !result.cvColumnsWideEnough ||
   !result.cvSidebarWideEnough ||
   !result.aboutSidebarDoesNotOverlap ||
-  !result.heroDoesNotOverlapText
+  !result.heroDoesNotOverlapText ||
+  !result.serviceStripOk
 ));
 
 console.log(JSON.stringify({ failures, results }, null, 2));
