@@ -316,8 +316,8 @@ function Hero({ onNavigate }: { onNavigate: (page: PageName) => void }) {
             ))}
           </div>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-secondary">
-            BIM Engineer with 7+ years of experience across design and construction phases, specializing in BIM production,
-            BIM coordination, CDE setup, model QA/QC, clash detection, shop drawings, and model-based QTO/BOQ.
+            BIM Engineer with 7+ years of experience across design and construction phases, strong in BIM governance,
+            coordination, model QA/QC, clash detection, shop drawings, model-based QTO/BOQ, and workflow automation.
           </p>
           <div className="hero-proof-strip" aria-label="Portfolio highlights">
             <Stat value="7+" label="Years Experience" />
@@ -789,10 +789,10 @@ function AboutPage() {
             <h1>Nattapong<br />Loes-a-nan</h1>
             <p className="cv-role">{contact.title}</p>
             <p>
-              BIM Engineer with 7+ years of experience across design and construction phases. I specialize in BIM production,
-              coordination, CDE setup, model QA/QC, clash detection, shop drawings, and model-based QTO/BOQ to support efficient project delivery.
+              BIM Engineer with 7+ years of experience across design and construction phases. I specialize in BIM governance,
+              coordination, CDE setup, model QA/QC, clash detection, shop drawings, model-based QTO/BOQ, and solution-driven workflow automation.
             </p>
-            <blockquote>I connect people, models, and data to deliver coordinated BIM solutions that support better decisions on site.</blockquote>
+            <blockquote>I connect people, models, data, and automation to deliver coordinated BIM solutions that support better project decisions.</blockquote>
           </div>
           <figure className="cv-portrait">
             <img src={contact.profileImage} alt="Nattapong Loes-a-nan profile portrait" loading="lazy" />

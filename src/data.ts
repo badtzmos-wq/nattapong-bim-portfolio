@@ -263,11 +263,18 @@ export const projects: Project[] = [
 
 export const experiences: Experience[] = [
   {
+    company: "AURECON Consulting (Thailand) Co., Ltd.",
+    position: "BIM Specialist (Solution Development)",
+    period: "Mar 2026 - Present",
+    location: "Bangkok, Thailand",
+    summary: "Develops BIM solution workflows for mixed-use operation models and data center design-stage harmonization, including plugin, extension tool, and automation script development.",
+  },
+  {
     company: "Freelance",
     position: "BIM Coordinator",
-    period: "Nov 2023 - Present",
+    period: "Nov 2023 - Feb 2026",
     location: "Bangkok, Thailand",
-    summary: "BIM coordination for design-stage and construction-stage projects, including BEP, CDE, QA/QC, clash checking, weekly BIM reports, and issue reporting.",
+    summary: "BIM coordination for design-stage dormitory and healthcare projects, including BEP development, CDE setup, document control, model QA/QC, clash checking, weekly BIM reports, and issue reporting.",
   },
   {
     company: "Thai Kajima Co., Ltd. (Contract)",
@@ -292,11 +299,11 @@ export const skillGroups = [
   },
   {
     title: "BIM Production",
-    items: ["3D Model Production", "2D Shop Drawing", "Revit Template", "BIM Family Creation", "As-Built Model", "Construction Documentation"],
+    items: ["3D Model Production", "2D Shop Drawing", "Revit Template", "BIM Family Creation", "As-Built Model", "Operation Model Development", "Construction Documentation"],
   },
   {
     title: "Technical & Data",
-    items: ["Model-based Quantity Takeoff", "BOQ Backup", "Data Preparation", "Data Transformation", "Dashboard and Report Preparation", "Weekly BIM Report"],
+    items: ["Model-based Quantity Takeoff", "BOQ Backup", "Data Preparation", "Data Transformation", "BIM Workflow Automation", "Plugin / Extension Tool Development", "Scripting for BIM Process Improvement", "Dashboard and Report Preparation", "Weekly BIM Report"],
   },
   {
     title: "Tools",
