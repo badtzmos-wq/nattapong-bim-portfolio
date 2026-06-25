@@ -91,7 +91,7 @@ const expression = String.raw`
   await wait();
   const coordination = text("[aria-live=polite]");
 
-  setInput("input[type=search]", "Power BI");
+  setInput("input[type=search]", "Power Automate");
   await wait();
   const searched = text("[aria-live=polite]");
 
@@ -191,10 +191,10 @@ const failures = [];
 if (value.initial.hash !== "#work") failures.push("work hash did not load");
 if (value.initial.scrollWidth > value.initial.clientWidth + 1) failures.push("mobile horizontal overflow detected");
 if (value.menu.links !== 4 || value.mobileNavigation.hashAfterAbout !== "#about" || !value.mobileNavigation.menuClosed) failures.push("mobile navigation failed");
-if (!value.coordination.includes("Showing 2 of 15")) failures.push("category filter failed");
-if (!value.searched.includes("Showing 1 of 15")) failures.push("search failed");
+if (!value.coordination.includes("Showing 3 of 16")) failures.push("category filter failed");
+if (!value.searched.includes("Showing 1 of 16")) failures.push("search failed");
 if (!value.empty) failures.push("empty state failed");
-if (!value.reset.includes("Showing 15 of 15")) failures.push("reset filters failed");
+if (!value.reset.includes("Showing 16 of 16")) failures.push("reset filters failed");
 if (!value.expanded.dialogOpenBeforeClose) failures.push("project modal did not open");
 if (value.expanded.previewObjectFit !== "contain") failures.push("detail preview is not object-fit contain");
 if (value.expanded.galleryThumbs < 1) failures.push("gallery thumbnails missing");

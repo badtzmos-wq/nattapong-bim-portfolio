@@ -321,7 +321,7 @@ function Hero({ onNavigate }: { onNavigate: (page: PageName) => void }) {
           </p>
           <div className="hero-proof-strip" aria-label="Portfolio highlights">
             <Stat value="7+" label="Years Experience" />
-            <Stat value="15" label="Portfolio Projects" />
+            <Stat value={String(projects.length)} label="Portfolio Projects" />
             <Stat value="2 Phases" label="Design + Construction" />
           </div>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
